@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import authRoute from "./routes/AuthRoutes";
+import questionRoute from "./routes/QuestionRoutes";
 import mongoose from "mongoose";
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/question", questionRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -10,7 +10,10 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
+import AskQuestion from "./pages/AskQuestions";
+import PendingQuestions from "./pages/PendingQuestions";
 
 const App: React.FC = () => {
   return (
@@ -24,6 +27,11 @@ const App: React.FC = () => {
               <Route element={<PublicRoute />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+              </Route>
+
+              <Route element={<ProtectedRoute />}>
+                <Route path="/ask" element={<AskQuestion />} />
+                <Route path="/pending" element={<PendingQuestions />} />
               </Route>
 
               <Route path="*" element={<Navigate to="/" />} />

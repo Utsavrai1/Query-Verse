@@ -25,12 +25,12 @@ const Header: React.FC = () => {
             <>
               <li>
                 <Button variant="ghost" asChild>
-                  <Link to="/books">My Questions</Link>
+                  <Link to="/pending">Pending Questions</Link>
                 </Button>
               </li>
               <li>
                 <Button variant="ghost" asChild>
-                  <Link to="/add-book">Ask Question</Link>
+                  <Link to="/ask">Ask Question</Link>
                 </Button>
               </li>
               <li>

@@ -3,6 +3,8 @@ import { useAuthStore } from "@/zustand/auth";
 import axios from "axios";
 import { Question } from "@/types";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export const useApprovedQuestion = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export const useApprovedQuestion = () => {
         totalQuestions: number;
         totalPages: number;
         currentPage: number;
-      }>(`http://localhost:3000/api/v1/question?${queryParams.toString()}`, {
+      }>(`${BACKEND_URL}/api/v1/question?${queryParams.toString()}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -57,7 +59,7 @@ export const useApprovedQuestion = () => {
     setError(null);
     try {
       const response = await axios.get<string[]>(
-        "http://localhost:3000/api/v1/question/tags/"
+        `${BACKEND_URL}/api/v1/question/tags/`
       );
 
       setTags(response.data);

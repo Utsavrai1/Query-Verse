@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Question } from "@/types";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const usePendingQuestions = () => {
   const [pendingQuestions, setPendingQuestions] = useState<Question[]>([]);
   const { toast } = useToast();
@@ -13,7 +15,7 @@ const usePendingQuestions = () => {
   const fetchPendingQuestions = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/admin/pending-questions",
+        `${BACKEND_URL}/api/v1/admin/pending-questions`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -32,7 +34,7 @@ const usePendingQuestions = () => {
   const handleApprove = async (id: string) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/admin/approve/${id}`,
+        `${BACKEND_URL}/api/v1/admin/approve/${id}`,
         {
           method: "PUT",
           headers: {
@@ -60,15 +62,12 @@ const usePendingQuestions = () => {
 
   const handleReject = async (id: string) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/v1/admin/reject/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await fetch(`${BACKEND_URL}/api/v1/admin/reject/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       if (response.ok) {
         toast({
           title: "Success",

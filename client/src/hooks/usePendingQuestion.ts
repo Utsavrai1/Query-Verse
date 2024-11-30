@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/zustand/auth";
 import { Question } from "@/types";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const usePendingQuestion = () => {
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ export const usePendingQuestion = () => {
 
     try {
       const response = await axios.get<Question[]>(
-        "http://localhost:3000/api/v1/question/pending",
+        `${BACKEND_URL}/api/v1/question/pending`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,7 +37,7 @@ export const usePendingQuestion = () => {
     const token = useAuthStore.getState().token;
     try {
       const response = await axios.put<Question>(
-        `http://localhost:3000/api/v1/question/${id}`,
+        `${BACKEND_URL}/api/v1/question/${id}`,
         updatedData,
         {
           headers: {
@@ -54,7 +55,7 @@ export const usePendingQuestion = () => {
   const deleteQuestion = async (id: string) => {
     const token = useAuthStore.getState().token;
     try {
-      await axios.delete(`http://localhost:3000/api/v1/question/${id}`, {
+      await axios.delete(`${BACKEND_URL}/api/v1/question/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

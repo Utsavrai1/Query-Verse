@@ -5,6 +5,7 @@ import { useAuthStore } from "@/zustand/auth";
 interface LoginResponse {
   token: string;
 }
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ export const useLogin = () => {
 
     try {
       const response = await axios.post<LoginResponse>(
-        "http://localhost:3000/api/v1/auth/login",
+        `${BACKEND_URL}/api/v1/auth/login`,
         { email, password }
       );
 

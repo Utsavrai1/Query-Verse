@@ -10,6 +10,7 @@ export const useGoogleLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { setToken } = useAuthStore();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const googleLogin = async (googleToken: string): Promise<string | null> => {
     setLoading(true);
@@ -17,7 +18,7 @@ export const useGoogleLogin = () => {
 
     try {
       const response = await axios.post<GoogleLoginResponse>(
-        "http://localhost:3000/api/v1/auth/google",
+        `${BACKEND_URL}/api/v1/auth/google`,
         { token: googleToken }
       );
 

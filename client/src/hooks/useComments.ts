@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/zustand/auth";
 import { Question } from "@/types";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const useComment = () => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ export const useComment = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/v1/comment/${id}`,
+        `${BACKEND_URL}/api/v1/comment/${id}`,
         { content },
         {
           headers: {

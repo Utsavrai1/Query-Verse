@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/zustand/auth";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const useLikeDislike = (
   initialLikes: number,
@@ -39,7 +40,7 @@ const useLikeDislike = (
       setUserLiked((prev) => !prev);
       setUserDisliked(false);
       await axios.post(
-        `http://localhost:3000/api/v1/react/like/${questionId}`,
+        `${BACKEND_URL}/api/v1/react/like/${questionId}`,
         {},
         {
           headers: {
@@ -76,7 +77,7 @@ const useLikeDislike = (
       setUserLiked(false);
 
       await axios.post(
-        `http://localhost:3000/api/v1/react/dislike/${questionId}`,
+        `${BACKEND_URL}/api/v1/react/dislike/${questionId}`,
         {},
         {
           headers: {

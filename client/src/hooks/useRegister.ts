@@ -6,6 +6,8 @@ interface LoginResponse {
   token: string;
 }
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +23,7 @@ export const useRegister = () => {
 
     try {
       const response = await axios.post<LoginResponse>(
-        "http://localhost:3000/api/v1/auth/signup",
+        `${BACKEND_URL}/api/v1/auth/signup`,
         { name, email, password }
       );
 

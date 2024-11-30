@@ -5,6 +5,7 @@ import { useAuthStore } from "@/zustand/auth";
 export const useCreateQuestion = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const createQuestion = async (
     title: string,
@@ -17,7 +18,7 @@ export const useCreateQuestion = () => {
 
     try {
       await axios.post(
-        "http://localhost:3000/api/v1/question",
+        `${BACKEND_URL}/api/v1/question`,
         { title, content, tags },
         {
           headers: {

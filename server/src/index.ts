@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: ["https://query-verse-tau.vercel.app"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 app.use(express.json());

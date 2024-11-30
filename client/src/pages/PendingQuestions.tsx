@@ -10,19 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import {
-  PendingQuestion,
-  usePendingQuestion,
-} from "@/hooks/usePendingQuestion";
+import { usePendingQuestion } from "@/hooks/usePendingQuestion";
 import Modal from "../components/Modal";
+import { Question } from "@/types";
 
 const PendingQuestions: React.FC = () => {
-  const [pendingQuestions, setPendingQuestions] = useState<PendingQuestion[]>(
-    []
-  );
+  const [pendingQuestions, setPendingQuestions] = useState<Question[]>([]);
   const { getPendingQuestion, loading, editQuestion, deleteQuestion } =
     usePendingQuestion();
-  const [editData, setEditData] = useState<PendingQuestion | null>(null);
+  const [editData, setEditData] = useState<Question | null>(null);
   const [tagsInput, setTagsInput] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<"edit" | "delete" | null>(null);

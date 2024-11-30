@@ -2,9 +2,12 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import mongoose from "mongoose";
 import authRoute from "./routes/AuthRoutes";
 import questionRoute from "./routes/QuestionRoutes";
-import mongoose from "mongoose";
+import reactRoute from "./routes/LikeDislikeRoutes";
+import commentRoute from "./routes/CommentRoutes";
+import adminRoutes from "./routes/AdminRoutes";
 
 dotenv.config();
 
@@ -27,6 +30,9 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/question", questionRoute);
+app.use("/api/v1/react", reactRoute);
+app.use("/api/v1/comment", commentRoute);
+app.use("/api/v1/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

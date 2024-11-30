@@ -14,6 +14,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import AskQuestion from "./pages/AskQuestions";
 import PendingQuestions from "./pages/PendingQuestions";
+import QuestionDetails from "./pages/QuetionDetails";
+import AdminDashboard from "./pages/AdminDashBoard";
 
 const App: React.FC = () => {
   return (
@@ -32,6 +34,8 @@ const App: React.FC = () => {
               <Route element={<ProtectedRoute />}>
                 <Route path="/ask" element={<AskQuestion />} />
                 <Route path="/pending" element={<PendingQuestions />} />
+                <Route path="/q/:id" element={<QuestionDetails />} />
+                <Route path="/admin" element={<AdminDashboard />} />
               </Route>
 
               <Route path="*" element={<Navigate to="/" />} />
@@ -42,5 +46,4 @@ const App: React.FC = () => {
     </ThemeProvider>
   );
 };
-
 export default App;

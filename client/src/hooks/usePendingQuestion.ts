@@ -1,26 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/zustand/auth";
-
-export interface PendingQuestion {
-  _id: string;
-  title: string;
-  content: string;
-  tags: string[];
-  createdAt: string;
-}
+import { Question } from "@/types";
 
 export const usePendingQuestion = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getPendingQuestion = async (): Promise<PendingQuestion[] | null> => {
+  const getPendingQuestion = async (): Promise<Question[] | null> => {
     setLoading(true);
     setError(null);
     const token = useAuthStore.getState().token;
 
     try {
-      const response = await axios.get<PendingQuestion[]>(
+      const response = await axios.get<Question[]>(
         "http://localhost:3000/api/v1/question/pending",
         {
           headers: {
@@ -39,13 +32,10 @@ export const usePendingQuestion = () => {
     }
   };
 
-  const editQuestion = async (
-    id: string,
-    updatedData: Partial<PendingQuestion>
-  ) => {
+  const editQuestion = async (id: string, updatedData: Partial<Question>) => {
     const token = useAuthStore.getState().token;
     try {
-      const response = await axios.put<PendingQuestion>(
+      const response = await axios.put<Question>(
         `http://localhost:3000/api/v1/question/${id}`,
         updatedData,
         {

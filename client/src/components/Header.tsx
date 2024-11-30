@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./mode-toggle";
 import { useAuthStore } from "@/zustand/auth";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
+import {
+  FaExclamationCircle,
+  FaQuestionCircle,
+  FaSignOutAlt,
+  FaUserShield,
+} from "react-icons/fa";
+import { MenuIcon } from "lucide-react";
 
 const Header: React.FC = () => {
-  const { token, clearToken } = useAuthStore();
+  const { token, clearToken, isAdmin } = useAuthStore();
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const handleLogout = () => {
     clearToken();
     localStorage.removeItem("token");
     navigate("/login");
+  };
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
   };
 
   return (
@@ -23,19 +41,56 @@ const Header: React.FC = () => {
         <ul className="flex space-x-4 items-center">
           {token ? (
             <>
-              <li>
-                <Button variant="ghost" asChild>
-                  <Link to="/pending">Pending Questions</Link>
-                </Button>
-              </li>
-              <li>
-                <Button variant="ghost" asChild>
-                  <Link to="/ask">Ask Question</Link>
-                </Button>
-              </li>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost">
+                    <MenuIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {isAdmin && (
+                    <DropdownMenuItem
+                      className={selectedItem === "admin" ? "bg-blue-600" : ""}
+                      onClick={() => {
+                        handleSelect("admin");
+                        navigate("/admin");
+                      }}
+                    >
+                      <span className="mr-2">
+                        <FaUserShield />
+                      </span>
+                      Admin Dashboard
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem
+                    className={selectedItem === "pending" ? "bg-blue-600" : ""}
+                    onClick={() => {
+                      handleSelect("pending");
+                      navigate("/pending");
+                    }}
+                  >
+                    <span className="mr-2">
+                      <FaExclamationCircle />
+                    </span>
+                    Pending Questions
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className={selectedItem === "ask" ? "bg-blue-600" : ""}
+                    onClick={() => {
+                      handleSelect("ask");
+                      navigate("/ask");
+                    }}
+                  >
+                    <span className="mr-2">
+                      <FaQuestionCircle />
+                    </span>
+                    Ask Question
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <li>
                 <Button variant="ghost" onClick={handleLogout}>
-                  Logout
+                  <FaSignOutAlt />
                 </Button>
               </li>
             </>

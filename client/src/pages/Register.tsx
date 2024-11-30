@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useRegister } from "@/hooks/useRegister";
+import { useGoogleLogin } from "@/hooks/useGoogleAuth";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ const Register: React.FC = () => {
   const { register, loading } = useRegister();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { googleLogin, loading: googleLoading } = useGoogleLogin();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,6 +65,33 @@ const Register: React.FC = () => {
     }
   };
 
+  const handleGoogleSuccess = async (response: any) => {
+    const googleToken = response.credential;
+    const token = await googleLogin(googleToken);
+
+    if (token) {
+      navigate("/");
+      toast({
+        title: "Google Login Successful",
+        description: "Welcome back to QueryVerse!",
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Google login failed. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleGoogleFailure = () => {
+    toast({
+      title: "Error",
+      description: "Google login failed. Please try again.",
+      variant: "destructive",
+    });
+  };
+
   return (
     <Card className="max-w-md mx-auto">
       <CardHeader>
@@ -79,7 +109,7 @@ const Register: React.FC = () => {
               placeholder="Name"
               value={formData.name}
               onChange={handleInputChange}
-              disabled={loading}
+              disabled={loading || googleLoading}
               required
             />
           </div>
@@ -92,7 +122,7 @@ const Register: React.FC = () => {
               placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
-              disabled={loading}
+              disabled={loading || googleLoading}
               required
             />
           </div>
@@ -105,7 +135,7 @@ const Register: React.FC = () => {
               placeholder="Password"
               value={formData.password}
               onChange={handleInputChange}
-              disabled={loading}
+              disabled={loading || googleLoading}
               required
             />
           </div>
@@ -117,6 +147,14 @@ const Register: React.FC = () => {
             {loading ? "Registering..." : "Register"}
           </Button>
         </form>
+        <div className="mt-4">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleFailure}
+            useOneTap
+            theme="filled_blue"
+          />
+        </div>
       </CardContent>
     </Card>
   );

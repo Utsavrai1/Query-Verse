@@ -43,7 +43,8 @@ export const isAdmin = async (
   next: NextFunction
 ) => {
   if (!req.user?.isAdmin) {
-    return res.status(403).json({ message: "Access denied. Admin only." });
+    res.status(403).json({ message: "Access denied. Admin only." });
+    return;
   }
   next();
 };

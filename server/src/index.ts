@@ -29,7 +29,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Book Management App");
+  res.send("Q&A Finance App");
 });
 
 app.use("/api/v1/auth", authRoute);

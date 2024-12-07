@@ -134,3 +134,26 @@ export const getUniqueTags = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
+export const getQuestionById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const question = await Question.findById(id)
+      .populate("author", "name email")
+      .populate({
+        path: "comments",
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: "user",
+          select: "name email",
+        },
+      });
+    if (!question) {
+      res.status(404).json({ message: "Question not found" });
+      return;
+    }
+    res.json(question);
+  } catch (error) {
+    res.status(400).json({ message: "Error fetching question" });
+  }
+};

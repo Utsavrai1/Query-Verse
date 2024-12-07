@@ -34,7 +34,6 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     onChange([]);
   };
 
-  console.log(options);
   if (!options) {
     return <></>;
   }

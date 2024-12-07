@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getApprovedQuestions,
+  getQuestionById,
   createQuestion,
   editQuestion,
   deleteQuestion,
@@ -12,6 +13,7 @@ import { authenticate } from "../middleware/auth";
 const router = express.Router();
 
 router.get("/", getApprovedQuestions);
+router.get("/id/:id", getQuestionById);
 router.get("/pending", authenticate, getUserPendingQuestions);
 router.get("/tags", getUniqueTags);
 router.post("/", authenticate, createQuestion);

@@ -1,31 +1,32 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Question, Comment } from "@/types";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import QuestionCard from "@/components/QuestionCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useComment } from "@/hooks/useComments";
+import { useQuestionById } from "@/hooks/useApprovedQuestion";
+import Loader from "@/components/Loader";
 
 const QuestionDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const location = useLocation();
-  const question = location.state?.question as Question;
+  const { getQuestionById, loading, error, question } = useQuestionById();
+  const { addComment, loading: commentLoading } = useComment();
 
   const [newComment, setNewComment] = useState("");
-  const { addComment, loading } = useComment();
 
-  const [currentQuestion, setCurrentQuestion] = useState<Question>({
-    ...question,
-    comments: question.comments || [],
-  });
+  useEffect(() => {
+    if (id) {
+      getQuestionById(id);
+    }
+  }, [id]);
 
   const handleCommentSubmit = async () => {
     try {
       const response = await addComment(id as string, newComment);
       console.log(response);
       if (response) {
-        setCurrentQuestion(response);
+        getQuestionById(id as string);
         setNewComment("");
       }
     } catch (error) {
@@ -37,13 +38,21 @@ const QuestionDetails: React.FC = () => {
     return new Date(dateString).toLocaleDateString();
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   if (!question) {
-    return <div>Loading...</div>;
+    return <div>No question found.</div>;
   }
 
   return (
     <div className="p-4">
-      <QuestionCard reactDisabled={false} question={currentQuestion} />
+      <QuestionCard reactDisabled={false} question={question} />
 
       <div className="mt-6">
         <h3 className="text-lg font-semibold">Answer this Question</h3>
@@ -56,17 +65,17 @@ const QuestionDetails: React.FC = () => {
         />
         <Button
           onClick={handleCommentSubmit}
-          disabled={!newComment.trim() || loading}
+          disabled={!newComment.trim() || commentLoading}
         >
-          {loading ? "Submitting..." : "Submit Answer"}
+          {commentLoading ? "Submitting..." : "Submit Answer"}
         </Button>
       </div>
 
       <div className="mt-4">
-        {currentQuestion.comments.length > 0 ? (
+        {question.comments.length > 0 ? (
           <>
             <h2 className="text-xl font-semibold">Answers</h2>
-            {currentQuestion.comments.map((comment: Comment) => (
+            {question.comments.map((comment) => (
               <Card
                 key={comment._id}
                 className="mb-4 p-4 bg-gray-50 hover:bg-gray-100 transition"

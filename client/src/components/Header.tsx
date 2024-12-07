@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./mode-toggle";
@@ -20,16 +20,11 @@ import { MenuIcon } from "lucide-react";
 const Header: React.FC = () => {
   const { token, clearToken, isAdmin } = useAuthStore();
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const handleLogout = () => {
     clearToken();
     localStorage.removeItem("token");
     navigate("/login");
-  };
-
-  const handleSelect = (item: string) => {
-    setSelectedItem(item);
   };
 
   return (
@@ -50,9 +45,7 @@ const Header: React.FC = () => {
                 <DropdownMenuContent>
                   {isAdmin && (
                     <DropdownMenuItem
-                      className={selectedItem === "admin" ? "bg-blue-600" : ""}
                       onClick={() => {
-                        handleSelect("admin");
                         navigate("/admin");
                       }}
                     >
@@ -63,9 +56,7 @@ const Header: React.FC = () => {
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem
-                    className={selectedItem === "pending" ? "bg-blue-600" : ""}
                     onClick={() => {
-                      handleSelect("pending");
                       navigate("/pending");
                     }}
                   >
@@ -75,9 +66,7 @@ const Header: React.FC = () => {
                     Pending Questions
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className={selectedItem === "ask" ? "bg-blue-600" : ""}
                     onClick={() => {
-                      handleSelect("ask");
                       navigate("/ask");
                     }}
                   >

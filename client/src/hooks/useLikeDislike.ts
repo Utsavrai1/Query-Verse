@@ -15,7 +15,7 @@ const useLikeDislike = (
   const [userLiked, setUserLiked] = useState<boolean>(false);
   const [userDisliked, setUserDisliked] = useState<boolean>(false);
   const token = useAuthStore.getState().token;
-  const userId = useAuthStore.getState().getUserId();
+  const userId = useAuthStore((state) => state.userId);
 
   useEffect(() => {
     setUserLiked(likesArray.includes(userId || ""));

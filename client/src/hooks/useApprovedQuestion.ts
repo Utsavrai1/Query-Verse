@@ -81,3 +81,24 @@ export const useApprovedQuestion = () => {
     tags,
   };
 };
+
+export const useQuestionById = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const getQuestionById = async (id: string): Promise<void> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get<Question>(
+        `${BACKEND_URL}/api/v1/question/id/${id}`
+      );
+      setQuestion(response.data);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Error fetching question");
+    } finally {
+      setLoading(false);
+    }
+  };
+  return { getQuestionById, loading, error, question };
+};

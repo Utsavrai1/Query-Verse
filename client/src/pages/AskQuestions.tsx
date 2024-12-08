@@ -15,21 +15,65 @@ const AskQuestion = () => {
   const { toast } = useToast();
   const { createQuestion, loading } = useCreateQuestion();
 
+  const validateInputs = () => {
+    if (title.trim().length < 10 || title.trim().length > 100) {
+      toast({
+        title: "Invalid Title",
+        description: "Title must be between 10 and 100 characters.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (content.trim().length < 20) {
+      toast({
+        title: "Invalid Content",
+        description: "Content must be at least 20 characters.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    const tagList = tags.split(",").map((tag) => tag.trim());
+    if (tagList.length === 0 || tagList.some((tag) => tag.length === 0)) {
+      toast({
+        title: "Invalid Tags",
+        description: "Please provide at least one valid tag.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateInputs()) {
+      return;
+    }
+
     console.log("Question submitted:", {
       title,
       content,
       tags: tags.split(",").map((tag) => tag.trim()),
     });
 
-    await createQuestion(title, content, tags);
-
-    toast({
-      title: "Question Submitted",
-      description: "Your question has been submitted for approval.",
-    });
-    navigate("/pending");
+    try {
+      await createQuestion(title, content, tags);
+      toast({
+        title: "Question Submitted",
+        description: "Your question has been submitted for approval.",
+      });
+      navigate("/pending");
+    } catch (error) {
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your question.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

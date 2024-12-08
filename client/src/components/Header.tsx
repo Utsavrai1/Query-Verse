@@ -67,6 +67,16 @@ const Header: React.FC = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
+                      navigate("/all");
+                    }}
+                  >
+                    <span className="mr-2">
+                      <FaExclamationCircle />
+                    </span>
+                    My Questions
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
                       navigate("/ask");
                     }}
                   >

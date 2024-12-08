@@ -16,6 +16,7 @@ import AskQuestion from "./pages/AskQuestions";
 import PendingQuestions from "./pages/PendingQuestions";
 import QuestionDetails from "./pages/QuetionDetails";
 import AdminDashboard from "./pages/AdminDashBoard";
+import AllQuestions from "./pages/MyQuestions";
 
 const App: React.FC = () => {
   return (
@@ -34,6 +35,7 @@ const App: React.FC = () => {
               <Route element={<ProtectedRoute />}>
                 <Route path="/ask" element={<AskQuestion />} />
                 <Route path="/pending" element={<PendingQuestions />} />
+                <Route path="/all" element={<AllQuestions />} />
                 <Route path="/q/:id" element={<QuestionDetails />} />
                 <Route path="/admin" element={<AdminDashboard />} />
               </Route>

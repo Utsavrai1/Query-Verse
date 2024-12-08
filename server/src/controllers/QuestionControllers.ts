@@ -82,13 +82,24 @@ export const getUserPendingQuestions = async (req: Request, res: Response) => {
   }
 };
 
+export const getUserAllQuestions = async (req: Request, res: Response) => {
+  try {
+    const questions = await Question.find({
+      author: (req.user as IUser)._id,
+    }).sort({ createdAt: -1 });
+    res.json(questions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user questions" });
+  }
+};
+
 export const editQuestion = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, content, tags } = req.body;
     console.log(req.body);
     const question = await Question.findOneAndUpdate(
-      { _id: id, author: (req.user as IUser)._id, isApproved: false },
+      { _id: id, author: (req.user as IUser)._id },
       {
         title,
         content,
@@ -113,7 +124,6 @@ export const deleteQuestion = async (req: Request, res: Response) => {
     const question = await Question.findOneAndDelete({
       _id: id,
       author: (req.user as IUser)._id,
-      isApproved: false,
     });
     if (!question) {
       res.status(404).json({ message: "Question not found or not deletable" });

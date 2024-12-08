@@ -1,8 +1,13 @@
-import { Card, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import useAdmin from "@/hooks/useAdmin";
-import QuestionCard from "@/components/QuestionCard";
 import withAdminAuth from "@/hoc/withAdminAuth";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString();
+};
 
 const AdminDashboard = () => {
   const { pendingQuestions, handleApprove, handleReject } = useAdmin();
@@ -13,11 +18,31 @@ const AdminDashboard = () => {
       <div className="space-y-4">
         {pendingQuestions.map((question) => (
           <Card key={question._id}>
-            <QuestionCard
-              question={question}
-              className="outline-none border-none"
-              showStatus={true}
-            />
+            <div className="flex justify-between items-center px-6 py-2">
+              <CardTitle>{question.title}</CardTitle>
+              <div>
+                <div
+                  className={cn(
+                    "inline-flex items-center rounded-md border border-zinc-200 px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 dark:border-zinc-800 dark:focus:ring-zinc-300",
+                    question.isApproved ? `bg-green-500` : `bg-red-500`
+                  )}
+                >
+                  {question.isApproved ? "Approved" : "Pending"}
+                </div>
+
+                <p className="text-sm text-muted-foreground">
+                  {formatDate(question.createdAt)}
+                </p>
+              </div>
+            </div>
+            <CardContent>
+              <p>{question.content}</p>
+              <div className="mt-2 space-x-2">
+                {question.tags.map((tag) => (
+                  <Badge key={tag}>{tag}</Badge>
+                ))}
+              </div>
+            </CardContent>
             <CardFooter>
               {!question.isApproved && (
                 <Button

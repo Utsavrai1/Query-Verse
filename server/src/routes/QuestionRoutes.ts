@@ -6,6 +6,7 @@ import {
   editQuestion,
   deleteQuestion,
   getUserPendingQuestions,
+  getUserAllQuestions,
   getUniqueTags,
 } from "../controllers/QuestionControllers";
 import { authenticate } from "../middleware/auth";
@@ -15,6 +16,7 @@ const router = express.Router();
 router.get("/", getApprovedQuestions);
 router.get("/id/:id", getQuestionById);
 router.get("/pending", authenticate, getUserPendingQuestions);
+router.get("/all", authenticate, getUserAllQuestions);
 router.get("/tags", getUniqueTags);
 router.post("/", authenticate, createQuestion);
 router.put("/:id", authenticate, editQuestion);
